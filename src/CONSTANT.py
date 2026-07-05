@@ -176,33 +176,3 @@ CLASS_DESCRIPTION = {
         22: "The hyperspectral image of 'Tree' shows the tree canopy with varied spectral reflectance depending on the leaf density, visible primarily in the near-infrared range."
     }
 }
-
-PALETTE_COLOR = np.array(
-            [[0, 0, 0], # 0
-             [234, 215, 0], # 1
-             [176, 224, 230], # 2
-             [65, 105, 225], # 3
-             [248, 205, 172], # 4
-             [104, 119, 97], # 5
-             [225, 97, 0], # 6
-             [0, 216, 0], # 7
-             [185, 185, 185], # 8
-             [255, 103, 103], # 9
-             [141, 37, 237], # 10
-             [255, 173, 189], # 11
-             [189, 118, 200], # 12
-             [45, 91, 153], # 13
-             [0, 198, 182], # 14
-             [207, 224, 154], # 15
-             [119, 155, 181], # 16
-             [169, 255, 210], # 17
-             [206, 154, 108], # 18
-             [0, 46, 164], # 19
-             [207, 173, 174], # 20
-             [249, 191, 255], # 21
-             [184, 48, 6]] # 22
-        )
-
-# For Houston Dataset
-RGB_BANDS = {"Houston": np.array([11, 21, 43]),
-             "PaviaU": np.array([60, 30, 27])}
