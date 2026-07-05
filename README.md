@@ -5,7 +5,7 @@
 </h2>
 
 <p align="center">
-  <b>? Paper Link(Waiting for Peer Review)</b>
+  <b>Paper Link(Waiting for Peer Review)</b>
 </p>
 
 ## Contents
@@ -41,35 +41,35 @@ pip install torch==2.7.1 numpy scikit-learn tqdm ftfy regex scipy
 ## File Architecture
 ```text
 LDL-HSI
-й└йд config/ (Training Setting)
-|    й└йд Honghu.json
-|    й╕йд ...dataset.json
-й└йд data/
-|    й└йд Honghu.mat
-|    й└йд Honghu_gt.mat
-|    й└йд ...dataset.mat
-|    й╕йд ...dataset_gt.mat
-й└йд model_save/
-|    й└йд Honghu_text_token.pt
-|    й╕йд ...dataset_text_token.pt
-й└йд result/
-й└йд src/
-|    й└йд engine/
-|    |    й└йд config.py             (Convert the config to Dataclass)
-|    |    й└йд datasets.py           (Data pre process and chunk process)
-|    |    й└йд evals.py              (Evaluate the classification result)
-|    |    й└йд setting_model.py      (Init model and optimizer)
-|    |    й╕йд train.py              (Train the model)
-|    й└йд extract_text/         (Same as CLIP repo except text_process.py)
-|    й└йд logger/
-|    |    й╕йд log.py                (Log class)
-|    й└йд model/
-|    |    й└йд SVAFormer.py          (Baseline)
-|    |    й╕йд LDLHSI.py             (Core model)
-|    й└йд CONSTANT.py                (Class description)
-|    й└йд train_begin.py             (Training entry)
-|    й╕йд utils.py
-й╕йд README.md
+|- config/ (Training Setting)
+|    |- Honghu.json
+|    |- ...dataset.json
+|- data/
+|    |- Honghu.mat
+|    |- Honghu_gt.mat
+|    |- ...dataset.mat
+|    |- ...dataset_gt.mat
+|- model_save/
+|    |- Honghu_text_token.pt
+|    |- ...dataset_text_token.pt
+|- result/
+|- src/
+|    |- engine/
+|    |    |- config.py             (Convert the config to Dataclass)
+|    |    |- datasets.py           (Data pre process and chunk process)
+|    |    |- evals.py              (Evaluate the classification result)
+|    |    |- setting_model.py      (Init model and optimizer)
+|    |    |- train.py              (Train the model)
+|    |- extract_text/         (Same as CLIP repo except text_process.py)
+|    |- logger/
+|    |    |- log.py                (Log class)
+|    |- model/
+|    |    |- SVAFormer.py          (Baseline)
+|    |    |- LDLHSI.py             (Core model)
+|    |- CONSTANT.py                (Class description)
+|    |- train_begin.py             (Training entry)
+|    |- utils.py
+|- README.md
 ```
 
 ## Dataset and Pretrained
