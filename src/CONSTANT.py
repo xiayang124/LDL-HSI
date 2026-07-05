@@ -1,0 +1,208 @@
+import numpy as np
+
+CLASSES = \
+{
+    "Indian": {
+        "Alfalfa": 1,
+        "Corn-notill": 2,
+        "Corn-mintill": 3,
+        "Corn": 4,
+        "Grass-pasture": 5,
+        "Grass-trees": 6,
+        "Grass-pasture-mowed": 7,
+        "Hay-windrowed": 8,
+        "Oats": 9,
+        "Soybean-notill": 10,
+        "Soybean-mintill": 11,
+        "Soybean-clean": 12,
+        "Wheat": 13,
+        "Woods": 14,
+        "Buildings-Grass-Trees-Drives": 15,
+        "Stone-Steel-Towers": 16,
+    },
+    "LongKou":{
+        "Corn": 1,
+        "Cotton": 2,
+        "Sesame": 3,
+        "Broad-leaf soybean": 4,
+        "Narrow-leaf soybean": 5,
+        "Rice": 6,
+        "Water": 7,
+        "Roads and houses": 8,
+        "Mixed weed": 9
+    },
+    "Houston":{
+        "Healthy grass": 1,
+        "Stressed grass": 2,
+        "Synthetic grass": 3,
+        "Trees": 4,
+        "Soil": 5,
+        "Water": 6,
+        "Residential": 7, 
+        "Commercial": 8,
+        "Road": 9,
+        "Highways": 10,
+        "Railways": 11,
+        "Parking Lot 1": 12,
+        "Parking Lot 2": 13,
+        "Tennis Court": 14,
+        "Running Track": 15,
+    },
+    "Salinas": {
+        "Brocoli_green_weeds_1": 1,
+        "Brocoli_green_weeds_2": 2,
+        "Fallow": 3,
+        "Fallow_rough_plow": 4,
+        "Fallow_smooth": 5,
+        "Stubble": 6,
+        "Celery": 7,
+        "Grapes_untrained": 8,
+        "Soil_vinyard_develop": 9,
+        "Corn_senesced_green_weeds": 10,
+        "Lettuce_romaine_4wk": 11,
+        "Lettuce_romaine_5wk": 12,
+        "Lettuce_romaine_6wk": 13,
+        "Lettuce_romaine_7wk": 14,
+        "Vinyard_untrained": 15,
+        "Vinyard_vertical_trellis": 16,
+    },
+    "PaviaU": {
+        "Asphalt": 1,
+        "Meadows": 2,
+        "Gravel": 3,
+        "Trees": 4,
+        "Painted metal sheets": 5,
+        "Bare Soil": 6,
+        "Bitumen": 7,
+        "Self-Blocking Bricks": 8,
+        "Shadows": 9,
+    },
+    "WHU-Hi-HongHu": {
+        "Red roof": 1,
+        "Road": 2,
+        "Bare soil": 3,
+        "Cotton": 4,
+        "Cotton firewood": 5,
+        "Rape": 6,
+        "Chinese cabbage": 7,
+        "Pakchoi": 8,
+        "Cabbage": 9,
+        "Tuber mustard": 10,
+        "Brassica parachinensis": 11,
+        "Brassica chinensis": 12,
+        "Small Brassica chinensis": 13,
+        "Lactuca sativa": 14,
+        "Celtuce": 15,
+        "Film covered lettuce": 16,
+        "Romaine lettuce": 17,
+        "Carrot": 18,
+        "White radish": 19,
+        "Garlic sprout": 20,
+        "Broad bean": 21,
+        "Tree": 22
+    }
+}
+
+
+CLASS_DESCRIPTION = {
+    "Houston": {
+        1: 'The hyperspectral of "Healthy grass" shows homogeneous green turf with high near-infrared reflectance and strong chlorophyll absorption in the red band.',
+        2: 'The hyperspectral of "Stressed grass" shows vegetation with reduced chlorophyll, lower NIR reflectance, and increased reflectance in the red and shortwave infrared bands.',
+        3: 'The hyperspectral of "Synthetic grass" shows artificial turf with relatively flat spectral response, lacking the strong red-edge and NIR peak of natural vegetation.',
+        4: 'The hyperspectral of "Trees" shows tall woody vegetation with complex canopy structure, strong NIR reflectance, and pronounced red-edge features.',
+        5: 'The hyperspectral of "Soil" shows bare ground with gradually increasing reflectance from visible to shortwave infrared and no strong vegetation absorption features.',
+        6: 'The hyperspectral of "Water" shows low reflectance across most bands, with strong absorption in near-infrared and shortwave infrared regions.',
+        7: 'The hyperspectral of "Residential" shows mixed rooftops, small vegetation patches, and paved surfaces, resulting in highly heterogeneous spectral signatures.',
+        8: 'The hyperspectral of "Commercial" shows large buildings, parking areas, and impervious surfaces with bright, non-vegetated spectra and varied roof materials.',
+        9: 'The hyperspectral of "Road" shows asphalt or paved surfaces with relatively dark, smooth spectra and moderate increase toward longer wavelengths.',
+        10: 'The hyperspectral of "Highways" shows wide asphalt pavements with uniform dark spectra similar to roads but with larger continuous extents.',
+        11: 'The hyperspectral of "Railways" shows linear rail tracks and adjacent ballast with mixed metal and gravel spectra, often brighter than surrounding roads.',
+        12: 'The hyperspectral of "Parking Lot 1" shows paved parking areas with vehicles and markings, producing bright-dark patterns and mixed man-made surface spectra.',
+        13: 'The hyperspectral of "Parking Lot 2" shows another type of parking area with slightly different pavement or usage, leading to distinct but related spectral characteristics.',
+        14: 'The hyperspectral of "Tennis Court" shows rectangular sports surfaces with uniform artificial materials and distinctive color-dependent reflectance patterns.',
+        15: 'The hyperspectral of "Running Track" shows oval athletic tracks with synthetic surfaces that exhibit smooth, relatively uniform non-vegetated spectra.',
+    },
+    "PaviaU": {
+        1: 'The hyperspectral of "Asphalt" shows dark impervious surfaces with low reflectance in the visible and a gentle increase toward the near-infrared.',
+        2: 'The hyperspectral of "Meadows" shows lush grass-covered areas with strong near-infrared reflectance and pronounced chlorophyll absorption in the red band.',
+        3: 'The hyperspectral of "Gravel" shows bright granular surfaces with relatively high, slowly varying reflectance across visible and near-infrared wavelengths.',
+        4: 'The hyperspectral of "Trees" shows tall woody vegetation with complex canopies, high NIR reflectance, and a distinct red-edge transition.',
+        5: 'The hyperspectral of "Painted metal sheets" shows very bright man-made roofs with sharp reflectance peaks and color-dependent variations in the visible bands.',
+        6: 'The hyperspectral of "Bare Soil" shows exposed ground with moderate reflectance that generally increases from visible to near-infrared, lacking vegetation absorption features.',
+        7: 'The hyperspectral of "Bitumen" shows dark roofing or paving material with low, smooth reflectance and minimal spectral structure.',
+        8: 'The hyperspectral of "Self-Blocking Bricks" shows patterned brick pavements with medium reflectance and subtle spectral variations due to material composition.',
+        9: 'The hyperspectral of "Shadows" shows very low radiance across all bands, dominated by illumination effects rather than intrinsic material properties.',
+    },
+    "Salinas": {
+        1: 'The hyperspectral of "Brocoli_green_weeds_1" shows mixed broccoli crops and green weeds with dense vegetation and strong near-infrared reflectance.',
+        2: 'The hyperspectral of "Brocoli_green_weeds_2" shows another broccoli-weed mixture with slightly different density and canopy structure, leading to similar but distinct vegetation spectra.',
+        3: 'The hyperspectral of "Fallow" shows uncultivated fields with sparse or senescent vegetation and a strong contribution from exposed soil.',
+        4: 'The hyperspectral of "Fallow_rough_plow" shows fallow fields with rough plowing marks, enhancing shadow effects and spectral variability of bare soil.',
+        5: 'The hyperspectral of "Fallow_smooth" shows fallow fields with smoother soil surfaces, giving more homogeneous bare-soil spectra.',
+        6: 'The hyperspectral of "Stubble" shows crop residues left on the field, with dry vegetation signatures and reduced near-infrared reflectance.',
+        7: 'The hyperspectral of "Celery" shows well-irrigated crop rows with bright green vegetation and strong red absorption and near-infrared reflectance.',
+        8: 'The hyperspectral of "Grapes_untrained" shows grapevines with irregular canopy geometry and mixed vine-soil spectra.',
+        9: 'The hyperspectral of "Soil_vinyard_develop" shows soil in developing vineyards, dominated by bare ground with minor vegetation contribution.',
+        10: 'The hyperspectral of "Corn_senesced_green_weeds" shows senescent corn mixed with green weeds, combining dry and green vegetation spectra.',
+        11: 'The hyperspectral of "Lettuce_romaine_4wk" shows young romaine lettuce plants at 4 weeks, with small, bright green patches separated by visible soil.',
+        12: 'The hyperspectral of "Lettuce_romaine_5wk" shows romaine lettuce at 5 weeks, with larger canopies and increased vegetation coverage.',
+        13: 'The hyperspectral of "Lettuce_romaine_6wk" shows romaine lettuce at 6 weeks, with dense foliage and strong near-infrared reflectance.',
+        14: 'The hyperspectral of "Lettuce_romaine_7wk" shows mature romaine lettuce at 7 weeks, with nearly closed canopies and dominant vegetation signatures.',
+        15: 'The hyperspectral of "Vinyard_untrained" shows untrained vineyards with irregular vine growth and strong vine-soil spectral mixtures.',
+        16: 'The hyperspectral of "Vinyard_vertical_trellis" shows vineyards on vertical trellises, giving more regular vine rows and structured vegetation spectra.',
+    },
+    "Honghu": {
+        1: "The hyperspectral image of the 'Red roof' shows a clear red-colored rooftop structure with high reflectance in the red spectral band, indicating its surface material properties.",
+        2: "The hyperspectral image of the 'Road' shows a paved surface, with distinct spectral characteristics due to the asphalt, visible in the mid-infrared bands.",
+        3: "The hyperspectral image of the 'Bare soil' shows soil patches with low reflectance, particularly in the visible and near-infrared bands, which is typical for exposed ground.",
+        4: "The hyperspectral image of 'Cotton' shows the green vegetation with typical leaf reflectance in the visible and near-infrared range, highlighting the crop's health.",
+        5: "The hyperspectral image of 'Cotton firewood' shows dried cotton plants with lower reflectance in the near-infrared bands compared to healthy cotton.",
+        6: "The hyperspectral image of 'Rape' shows the crop's characteristic yellowish-green leaves, identifiable in both visible and near-infrared bands.",
+        7: "The hyperspectral image of 'Chinese cabbage' shows the bright green leaves with high reflectance in the green and red spectral bands.",
+        8: "The hyperspectral image of 'Pakchoi' shows dense green leaves with reflective patterns that are distinct in the visible and near-infrared bands.",
+        9: "The hyperspectral image of 'Cabbage' shows rounded green leaves with high reflectance in the near-infrared bands, indicating healthy growth.",
+        10: "The hyperspectral image of 'Tuber mustard' shows a distinctive green crop with broad leaves, detectable in the visible and near-infrared spectra.",
+        11: "The hyperspectral image of 'Brassica parachinensis' shows the crop with lighter green leaves, different from other Brassica varieties in spectral reflectance.",
+        12: "The hyperspectral image of 'Brassica chinensis' shows the well-defined green leaves with high reflectance in the near-infrared bands.",
+        13: "The hyperspectral image of 'Small Brassica chinensis' shows smaller, denser green leaves, which exhibit unique spectral signatures in the visible and near-infrared regions.",
+        14: "The hyperspectral image of 'Lactuca sativa' shows the lettuce with a distinctive green color and reflective properties, especially in the green and red bands.",
+        15: "The hyperspectral image of 'Celtuce' shows the lettuce variety with slightly different spectral characteristics, particularly in the visible and near-infrared bands.",
+        16: "The hyperspectral image of 'Film covered lettuce' shows lettuce plants covered with transparent film, which alters spectral reflectance, especially in the near-infrared.",
+        17: "The hyperspectral image of 'Romaine lettuce' shows distinct green leaf patterns, with noticeable variations in spectral reflectance across visible and near-infrared bands.",
+        18: "The hyperspectral image of 'Carrot' shows a distinctive orange root crop with lower reflectance in the visible bands compared to leafy crops.",
+        19: "The hyperspectral image of 'White radish' shows the root crop with a characteristic spectral signature, with noticeable lower reflectance in the red and near-infrared regions.",
+        20: "The hyperspectral image of 'Garlic sprout' shows the young garlic leaves with bright green reflectance, distinct in the visible and near-infrared bands.",
+        21: "The hyperspectral image of 'Broad bean' shows the broad bean plants with green leaves and pods, displaying characteristic spectral reflectance in the visible spectrum.",
+        22: "The hyperspectral image of 'Tree' shows the tree canopy with varied spectral reflectance depending on the leaf density, visible primarily in the near-infrared range."
+    }
+}
+
+PALETTE_COLOR = np.array(
+            [[0, 0, 0], # 0
+             [234, 215, 0], # 1
+             [176, 224, 230], # 2
+             [65, 105, 225], # 3
+             [248, 205, 172], # 4
+             [104, 119, 97], # 5
+             [225, 97, 0], # 6
+             [0, 216, 0], # 7
+             [185, 185, 185], # 8
+             [255, 103, 103], # 9
+             [141, 37, 237], # 10
+             [255, 173, 189], # 11
+             [189, 118, 200], # 12
+             [45, 91, 153], # 13
+             [0, 198, 182], # 14
+             [207, 224, 154], # 15
+             [119, 155, 181], # 16
+             [169, 255, 210], # 17
+             [206, 154, 108], # 18
+             [0, 46, 164], # 19
+             [207, 173, 174], # 20
+             [249, 191, 255], # 21
+             [184, 48, 6]] # 22
+        )
+
+# For Houston Dataset
+RGB_BANDS = {"Houston": np.array([11, 21, 43]),
+             "PaviaU": np.array([60, 30, 27])}

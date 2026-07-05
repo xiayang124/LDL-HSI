@@ -1,0 +1,9 @@
+*.pyc
+*.mat
+*.pth
+*.txt
+*.npy
+.vscode/
+src/draw/
+src/engine/inference.py
+src/extract_text/ViT-L-14.pt

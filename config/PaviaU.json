@@ -1,0 +1,86 @@
+{
+  "BaseSetting": {
+    "dataset": "PaviaU",
+    "root": "./data",
+    "bands": 103,
+    "num_classes": 9,
+    "least": 5,
+    "change_text": false
+  },
+
+  "TrainingSetting": {
+    "model": "LDLHSI",
+    "train_num": 5,
+    "patchsize": 25,
+    "pca": 10,
+    "batchsize": 32,
+    "epochs": 150,
+    "learning_rate": 0.001,
+    "project_dim": 64,
+    "dim_heads": 32,
+    "pin_memory": true,
+    "clip_dim": 768,
+    "heads": 8,
+    "seed": 114514,
+    "tau": 0.5,
+    "clip_temperature": 0.07,
+    "loss_fusion": 0.2,
+    "weight_decay": 0.000,
+    "dropout": 0.1,
+    "checkpoint": 10,
+    "dim": 64,
+    "se_ratio": 1.0,
+    "proto_momentum": 0.4,
+    "device": "cuda:0",
+    "multigpu": false,
+    "amp": false,
+    "optimizer": "AdamW",
+    "model_path": "./model_save/PaviaU_best_model.pth",
+    "pretrain_loc": "./src/extract_text/ViT-L-14.pt"
+  },
+
+  "ModelSetting": {
+    "ProtoAlign": true,
+    "SlimEnhance": true,
+    "EMA": true,
+    "FusionLogit": true
+  },
+
+  "SVASetting":{
+    "data_sign": "PaviaU",
+    "patch_size": 25,
+    "serve_patch_size": 25,
+    "batch_size": 64,
+    "num_classes": 9,
+    "pca": 10,
+    "dim_heads": 64,
+    "spectral_size": 10,
+    "random_rotate": false,
+    "trainer": "transformer",
+    "use_mask": true,
+    "mlp_head_dim": 64,
+    "depth": 2,
+    "dim": 64,
+    "heads": 20,
+    "mask_pct": 30
+  },
+
+  "Argument": {
+    "rotation": false,
+    "overall_noise": true,
+    "spectral_noise": false
+  },
+
+  "TestSetting": {
+    "ablation": false,
+    "Run_Times": 5,
+    "ablation_content": {
+      "ProtoAlign": [true, false],
+      "SlimEnhance": [true, false]
+    },
+    "multi_params": false,
+    "multi_params_content": {
+      "proto_momentum": [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+    }
+  }
+}
